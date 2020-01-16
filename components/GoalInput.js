@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {StyleSheet, View, TextInput, Button} from 'react-native';
+import {Modal, StyleSheet, View, TextInput, Button} from 'react-native';
 
 const GoalInput = props => {
     const [enteredGoal, setEnteredGoal] = useState('');
@@ -8,17 +8,32 @@ const GoalInput = props => {
         setEnteredGoal(enteredText);
     }
 
+    const addGoalHandler = () => {
+        props.onAddGoal(enteredGoal);
+        setEnteredGoal('');
+    };
+
+    // const cancelGoalHandler = () = {
+    //     onCancel
+    // };
+
     return (
-        <View style={styles.inputContainer}>
-            <TextInput 
-                placeholder="Course goal" 
-                style={styles.input} 
-                onChangeText={goalInputHandler} 
-                value={enteredGoal}/>
-            <Button 
-                title="ADD" 
-                onPress={props.onAddGoal.bind(this, enteredGoal)} />
-        </View>
+        <Modal visible={props.visible} animationType="slide">
+            <View style={styles.inputContainer}>
+                <TextInput 
+                    placeholder="Course goal" 
+                    style={styles.input} 
+                    onChangeText={goalInputHandler} 
+                    value={enteredGoal}/>
+                <Button 
+                    title="CANCEL" 
+                    color="red" 
+                    onPress={props.onCancel}/>
+                <Button 
+                    title="ADD" 
+                    onPress={addGoalHandler} />
+            </View>
+        </Modal>
     );
 }
 
@@ -26,13 +41,15 @@ export default GoalInput;
 
 const styles = StyleSheet.create({
     inputContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center'
-      },
+     },
     input: {
         width: '80%',
-        borderColor: 'black',
-        borderWidth: 1
-    }
+        borderColor: 'red',
+        borderWidth: 1, 
+        padding: 10,
+        marginBottom: 10
+     }
 });
